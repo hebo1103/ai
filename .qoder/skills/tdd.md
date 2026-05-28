@@ -1,3 +1,19 @@
+产品规范：
+.qoder\rules\product\product.md
+
+后端技术规范：
+.qoder\rules\backend\backend.md
+
+前端技术规范：
+.qoder\rules\front\front.md
+
+测试规范：
+.qoder\rules\test\test.md
+
+
+本流程为TDD流程，你需要根据产品规范、后端技术规范、端技术规范、测试规范来规范整个流程，在执行的过程中有任务问题，你都需要找我确认一下
+
+
 # TDD（测试驱动开发）自动化流程指南
 
 > **目标**：当产品经理提供 PRD（产品需求文档）和原型设计后，本指南将帮助开发者（或 AI）严格按照 TDD 流程生成高质量、可测试、可维护的代码。  
