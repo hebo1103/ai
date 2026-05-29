@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电商平台 - 产品原型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: #fff;
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #007bff;
+        }
+
+        /* 页面容器 */
+        .page {
+            display: none;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* 首页 */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #fff;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* 产品卡片 */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        /* 产品详情页 */
+        .product-detail {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .detail-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .detail-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 80px;
+        }
+
+        .detail-info h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .detail-price {
+            font-size: 48px;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .detail-desc {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+        }
+
+        /* 筛选栏 */
+        .filter-bar {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-bar h3 {
+            margin-bottom: 15px;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid #007bff;
+            background: #fff;
+            color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #007bff;
+            color: #fff;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .detail-header {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🛒 电商平台</div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('home')" class="active" id="nav-home">首页</a></li>
+                <li><a onclick="showPage('products')" id="nav-products">产品中心</a></li>
+                <li><a onclick="showPage('about')" id="nav-about">关于我们</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 首页 -->
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1>欢迎来到我们的电商平台</h1>
+            <p>精选优质产品，为您提供最佳购物体验</p>
+            <button class="btn" onclick="showPage('products')">浏览产品</button>
+        </div>
+
+        <h2 class="section-title">热门产品推荐</h2>
+        <div class="product-grid">
+            <div class="product-card" onclick="showProductDetail(1)">
+                <div class="product-image">📱</div>
+                <div class="product-info">
+                    <div class="product-name">智能手机 Pro</div>
+                    <div class="product-price">¥3,999</div>
+                    <div class="product-desc">高性能处理器，超清摄像头，长续航电池</div>
+                </div>
+            </div>
+            <div class="product-card" onclick="showProductDetail(2)">
+                <div class="product-image">💻</div>
+                <div class="product-info">
+                    <div class="product-name">笔记本电脑 Ultra</div>
+                    <div class="product-price">¥6,999</div>
+                    <div class="product-desc">轻薄便携，强劲性能，超长续航</div>
+                </div>
+            </div>
+            <div class="product-card" onclick="showProductDetail(3)">
+                <div class="product-image">🎧</div>
+                <div class="product-info">
+                    <div class="product-name">无线耳机 Max</div>
+                    <div class="product-price">¥1,299</div>
+                    <div class="product-desc">主动降噪，高保真音质，舒适佩戴</div>
+                </div>
+            </div>
+            <div class="product-card" onclick="showProductDetail(4)">
+                <div class="product-image">⌚</div>
+                <div class="product-info">
+                    <div class="product-name">智能手表 Series</div>
+                    <div class="product-price">¥2,499</div>
+                    <div class="product-desc">健康监测，运动追踪，智能通知</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品中心 -->
+    <div id="products" class="page">
+        <h2 class="section-title">产品中心</h2>
+        
+        <div class="filter-bar">
+            <h3>产品分类</h3>
+            <div class="filter-options">
+                <button class="filter-btn active" onclick="filterProducts('all', this)">全部</button>
+                <button class="filter-btn" onclick="filterProducts('phone', this)">手机</button>
+                <button class="filter-btn" onclick="filterProducts('laptop', this)">笔记本</button>
+                <button class="filter-btn" onclick="filterProducts('audio', this)">音频</button>
+                <button class="filter-btn" onclick="filterProducts('watch', this)">手表</button>
+            </div>
+        </div>
+
+        <div class="product-grid" id="product-list">
+            <div class="product-card" data-category="phone" onclick="showProductDetail(1)">
+                <div class="product-image">📱</div>
+                <div class="product-info">
+                    <div class="product-name">智能手机 Pro</div>
+                    <div class="product-price">¥3,999</div>
+                    <div class="product-desc">高性能处理器，超清摄像头，长续航电池</div>
+                </div>
+            </div>
+            <div class="product-card" data-category="laptop" onclick="showProductDetail(2)">
+                <div class="product-image">💻</div>
+                <div class="product-info">
+                    <div class="product-name">笔记本电脑 Ultra</div>
+                    <div class="product-price">¥6,999</div>
+                    <div class="product-desc">轻薄便携，强劲性能，超长续航</div>
+                </div>
+            </div>
+            <div class="product-card" data-category="audio" onclick="showProductDetail(3)">
+                <div class="product-image">🎧</div>
+                <div class="product-info">
+                    <div class="product-name">无线耳机 Max</div>
+                    <div class="product-price">¥1,299</div>
+                    <div class="product-desc">主动降噪，高保真音质，舒适佩戴</div>
+                </div>
+            </div>
+            <div class="product-card" data-category="watch" onclick="showProductDetail(4)">
+                <div class="product-image">⌚</div>
+                <div class="product-info">
+                    <div class="product-name">智能手表 Series</div>
+                    <div class="product-price">¥2,499</div>
+                    <div class="product-desc">健康监测，运动追踪，智能通知</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品详情页 -->
+    <div id="product-detail" class="page">
+        <div class="product-detail">
+            <div class="detail-header">
+                <div class="detail-image" id="detail-image">📱</div>
+                <div class="detail-info">
+                    <h1 id="detail-name">产品名称</h1>
+                    <div class="detail-price" id="detail-price">¥0</div>
+                    <div class="detail-desc" id="detail-desc">产品描述</div>
+                    <div class="detail-actions">
+                        <button class="btn btn-primary">加入购物车</button>
+                        <button class="btn btn-secondary">立即购买</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 关于我们 -->
+    <div id="about" class="page">
+        <div class="product-detail">
+            <h1 style="margin-bottom: 30px;">关于我们</h1>
+            <p style="font-size: 16px; line-height: 1.8; color: #666;">
+                我们是一家专注于提供优质电子产品的电商平台。成立以来，我们始终坚持"品质第一、用户至上"的理念，
+                为消费者精选全球优质产品。
+            </p>
+            <p style="font-size: 16px; line-height: 1.8; color: #666; margin-top: 20px;">
+                <strong>我们的使命：</strong>让每个人都能享受到科技带来的便利与乐趣。<br>
+                <strong>我们的愿景：</strong>成为最受信赖的电商平台。<br>
+                <strong>我们的价值观：</strong>诚信、创新、品质、服务。
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 产品数据
+        const products = {
+            1: {
+                name: '智能手机 Pro',
+                price: '¥3,999',
+                desc: '这款智能手机采用最新一代高性能处理器，配备超清摄像头系统，支持5G网络，拥有长续航电池，让您畅爽使用一整天。6.7英寸AMOLED屏幕，120Hz刷新率，带来极致视觉体验。',
+                icon: '📱'
+            },
+            2: {
+                name: '笔记本电脑 Ultra',
+                price: '¥6,999',
+                desc: '轻薄机身设计，重量仅1.2kg，搭载最新处理器和独立显卡，16GB内存+512GB SSD，14英寸2K屏幕，续航时间长达12小时，是办公和娱乐的完美选择。',
+                icon: '💻'
+            },
+            3: {
+                name: '无线耳机 Max',
+                price: '¥1,299',
+                desc: '采用主动降噪技术，有效隔绝外界噪音。高保真音质，三频均衡。人体工学设计，长时间佩戴依然舒适。续航时间长达30小时，支持快充。',
+                icon: '🎧'
+            },
+            4: {
+                name: '智能手表 Series',
+                price: '¥2,499',
+                desc: '全方位健康监测，包括心率、血氧、睡眠等。支持100+运动模式，精准记录运动数据。智能通知提醒，生活助手。50米防水，游泳也能佩戴。',
+                icon: '⌚'
+            }
+        };
+
+        // 页面切换
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 更新导航状态
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById('nav-' + pageId).classList.add('active');
+        }
+
+        // 显示产品详情
+        function showProductDetail(productId) {
+            const product = products[productId];
+            document.getElementById('detail-name').textContent = product.name;
+            document.getElementById('detail-price').textContent = product.price;
+            document.getElementById('detail-desc').textContent = product.desc;
+            document.getElementById('detail-image').textContent = product.icon;
+            
+            showPage('product-detail');
+        }
+
+        // 筛选产品
+        function filterProducts(category, btn) {
+            // 更新按钮状态
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+            
+            // 筛选产品
+            document.querySelectorAll('.product-card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

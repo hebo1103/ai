@@ -1,244 +1,102 @@
-产品规范：
-.qoder\rules\product\product.md
+# TDD 测试驱动开发自动化流程规范
 
-后端技术规范：
-.qoder\rules\backend\backend.md
+## 一、核心目标与原则
 
-前端技术规范：
-.qoder\rules\front\front.md
+- **目标**：基于给定的产品/技术/测试规范，通过严格的TDD流程，生成高质量、完全符合规范且通过测试的代码。
+- **流程属性**：分阶段、强确认、不可跳跃。每个阶段完成后，必须得到你的明确同意，才能进入下一阶段，否则我将一直等待。
+- **异常处理原则**：任何与规范不一致或需求不明确的地方，我都会主动识别、暂停并请你确认。
 
-测试规范：
-.qoder\rules\test\test.md
+## 二、前置条件与输入物
 
+在执行流程前，我会首先确认以下文件与目录结构已就绪：
 
-本流程为TDD流程，你需要根据产品规范、后端技术规范、端技术规范、测试规范来规范整个流程，在执行的过程中有任务问题，你都需要找我确认一下
+| 规范/文档 | 文件路径 |
+|-----------|----------|
+| 产品规范 | `.qoder/rules/product/product.md` |
+| 后端技术规范 | `.qoder/rules/backend/backend.md` |
+| 前端技术规范 | `.qoder/rules/front/front.md` |
+| 测试规范 | `.qoder/rules/test/test.md` |
+| 产品Spec目录 | `.qoder/spec/product` |
+| 技术Spec目录 | `.qoder/spec/technology` |
+| 测试Spec目录 | `.qoder/spec/test` |
+| 测试Bug目录 | `.qoder/rules/test` |
+## 三、分阶段执行流程 (带确认门)
 
+整个流程分为5个阶段，每个阶段结束都有一个"确认门"，必须你同意通过后才能开启下一阶段。
 
-# TDD（测试驱动开发）自动化流程指南
+### 阶段1：生成产品原型与PRD
 
-> **目标**：当产品经理提供 PRD（产品需求文档）和原型设计后，本指南将帮助开发者（或 AI）严格按照 TDD 流程生成高质量、可测试、可维护的代码。  
-> **适用范围**：后端/全栈项目（Java/Spring Boot），可适配其他技术栈。  
-> **核心理念**：先写测试，后写实现 → 红（失败）→ 绿（通过）→ 重构。
+**触发条件**：用户需求中未提供原型和PRD。
 
----
+**执行步骤**：
+1. 根据你提出的需求，并与你充分沟通、最终确认后，我将：
+   - 生成产品原型，原型一定是一个.html文件，并且是带有交互的，打开可直接查看
+   - 生成PRD（产品需求文档）
+   - 将生成的原型和PRD文件，放入产品Spec文档 (`.qoder/spec/product`) 目录下
 
-## 一、输入物
+2. **自检**：我会严格按照产品规范 (`.qoder/rules/product/product.md`) 检查生成的文件。如有任何不符合，我会自动修复，直到完全满足规范为止。
 
-在启动 TDD 流程前，你需要拿到以下材料：
+**【确认门】**：完成上述步骤后，我会向你展示成果，并询问："产品原型和PRD已生成并符合规范，是否确认并进入下一步（技术Spec生成）？"。在你明确回复"是/继续"之前，我不能进行任何下一步操作。
 
-1. **PRD 文档**（Markdown 或文本）  
-   - 功能列表、用户故事、验收标准、业务规则、异常场景。
-2. **原型设计**（图片 / Figma / HTML 草稿）  
-   - 页面结构、组件、交互逻辑、数据字段定义。
+### 阶段2：生成技术Spec文档
 
----
+**触发条件**：阶段1已得到你的确认。
 
-## 二、输出物（按流程顺序）
+**执行步骤**：
+1. 基于已确认的原型和PRD，以及前端技术规范和后端技术规范，生成技术Spec文档。
+2. 将生成的spec文档放入技术Spec文档 (`.qoder/spec/technology`) 目录下。
 
-| 阶段 | 产物 | 说明 |
-|------|------|------|
-| 分析 | 测试用例清单（Excel / Markdown 表格） | 覆盖正常路径、边界条件、异常场景 |
-| 红 | 测试代码（JUnit / Mockito / 集成测试） | 所有测试必须编译通过但运行失败（红） |
-| 绿 | 最小实现代码 | 仅使测试通过，不做多余优化 |
-| 重构 | 重构后的代码 + 通过测试 | 消除重复、提升可读性/性能 |
-| 循环 | 下一组测试 → 实现 → 重构 | 按用户故事或模块迭代 |
-| 最终 | 完整项目 + 测试报告 | 所有测试通过，代码覆盖率 ≥ 80% |
-
----
-
-## 三、详细步骤（AI 执行指令）
-
-### Step 0：环境准备
-- 确认项目技术栈（Spring Boot + JUnit 5 + Mockito + Testcontainers 等）。
-- 构建工具：Maven / Gradle。
-- 配置测试目录：`src/test/java`。
+**文档内容要求**：必须全面覆盖本次需求所有的增、删、改、查内容，至少包含：
+- 用例图
+- 流程图
+- 时序图
+- ER图
+- 数据库脚本设计
+- 项目接口文档（接口的入参和返参）
 
-### Step 1：需求分析 → 生成测试用例清单
+**自检**：我会严格按照前后端技术规范检查生成的spec文档是否符合规范。如果不符合，我会不断进行完善和处理，直到完全符合规范。
 
-从 PRD 和原型中提取以下内容：
+**【确认门】**：完成上述步骤后，我会向你展示成果，并询问："技术Spec文档已生成并符合规范，是否确认并进入下一步（测试用例生成）？"。在你明确回复之前，我不能继续。
 
-#### 1.1 用户故事拆解
-- 例：`作为一个用户，我希望注册账号，以便使用系统。`
+### 阶段3：生成测试用例
 
-#### 1.2 验收标准转测试点
-- **正常路径**：成功注册 → 返回用户信息 + 201 Created。
-- **边界条件**：用户名长度最小值/最大值、邮箱格式。
-- **异常场景**：用户名已存在、缺少必填字段、密码不符合规则。
-
-#### 1.3 生成测试用例表格（示例）
-
-| 用例ID | 模块 | 场景 | 输入 | 期望输出 | 测试类型 |
-|--------|------|------|------|----------|----------|
-| TC001 | 注册 | 成功注册 | 合法用户名、邮箱、密码 | 201，用户对象 | 单元/集成 |
-| TC002 | 注册 | 用户名重复 | 已存在用户名 | 409 Conflict | 单元/集成 |
-| TC003 | 注册 | 密码过短 | 长度<6 | 400 Bad Request | 单元测试 |
-| ... | ... | ... | ... | ... | ... |
-
-> 将此表格保存为 `test-cases.md`，作为后续编写测试的依据。
-
----
-
-### Step 2：编写测试（红阶段）
-
-**规则**：
-- 每个测试用例对应一个测试方法。
-- 测试方法命名遵循：`should_ExpectedBehavior_When_StateUnderTest`。
-- 使用断言库（AssertJ / Hamcrest）。
-- 对外部依赖（数据库、第三方 API）使用 Mock 或 Testcontainers。
+**触发条件**：阶段2已得到你的确认。
 
-#### 2.1 单元测试示例（Service 层）
-
-```java
-@Test
-void shouldReturnUser_WhenRegisterWithValidData() {
-    // given
-    RegisterRequest request = new RegisterRequest("john", "john@example.com", "pass123");
-    when(userRepository.existsByUsername("john")).thenReturn(false);
-    when(userRepository.save(any())).thenReturn(new User(1L, "john", "john@example.com"));
-
-    // when
-    UserDto result = userService.register(request);
-
-    // then
-    assertThat(result.getUsername()).isEqualTo("john");
-    verify(userRepository).save(any());
-}
-
-@Test
-void shouldThrowConflict_WhenUsernameAlreadyExists() {
-    // given
-    RegisterRequest request = new RegisterRequest("john", "john@example.com", "pass123");
-    when(userRepository.existsByUsername("john")).thenReturn(true);
-
-    // when / then
-    assertThatThrownBy(() -> userService.register(request))
-        .isInstanceOf(DuplicateUsernameException.class);
-}
-2.2 集成测试示例（Controller + 真实数据库）
-java
-@SpringBootTest
-@AutoConfigureMockMvc
-@Testcontainers
-class UserControllerIntegrationTest {
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
-            .withDatabaseName("testdb");
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Test
-    void shouldReturn201_WhenRegister() throws Exception {
-        String requestJson = """
-                {
-                    "username": "alice",
-                    "email": "alice@example.com",
-                    "password": "secret123"
-                }
-                """;
-        mockMvc.perform(post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.username").value("alice"));
-    }
-}
-2.3 执行测试（红）
-运行 mvn test 或 gradle test —— 所有测试均失败（因为实现代码尚未编写）。
-
-Step 3：编写最小实现（绿阶段）
-规则：
-
-只编写让当前失败测试通过的最少代码。
-
-不预先设计，不添加额外功能。
-
-允许硬编码或简单返回，只要通过测试即可（后续重构）。
-
-示例（Service 实现）
-java
-public UserDto register(RegisterRequest request) {
-    if (userRepository.existsByUsername(request.getUsername())) {
-        throw new DuplicateUsernameException();
-    }
-    User user = new User();
-    user.setUsername(request.getUsername());
-    user.setEmail(request.getEmail());
-    user.setPassword(passwordEncoder.encode(request.getPassword()));
-    User saved = userRepository.save(user);
-    return new UserDto(saved.getId(), saved.getUsername(), saved.getEmail());
-}
-再次执行测试
-所有测试应变为 绿色（通过）。
-
-Step 4：重构（消除异味）
-在测试全部通过的前提下，优化代码结构：
-
-消除重复逻辑（提取私有方法）。
-
-改善命名、变量作用域。
-
-调整包结构或引入设计模式（如果必要）。
-
-确保重构后所有测试 依然通过（自动验证）。
-
-重构示例
-java
-// 重构前
-if (userRepository.existsByUsername(request.getUsername())) {
-    throw new DuplicateUsernameException();
-}
-if (userRepository.existsByEmail(request.getEmail())) {
-    throw new DuplicateEmailException();
-}
-// 重构后：提取方法 validateUniqueness(request)
-Step 5：迭代循环
-对 PRD 中的每个用户故事或每个模块，重复 Step 1 → Step 4，直到所有功能实现完毕。
-
-典型迭代顺序：
-
-实体层（Repository 测试）
-
-业务逻辑层（Service 单元测试）
-
-API 层（Controller 集成测试）
-
-端到端场景（@SpringBootTest 全栈测试）
-
-Step 6：最终交付物
-完成全部迭代后，输出：
-
-源代码（src/main/java）
-
-测试代码（src/test/java）
-
-测试报告（target/surefire-reports 或 build/reports/tests）
-
-覆盖率报告（JaCoCo / Cobertura），要求行覆盖率 ≥ 80%
-
-四、给 AI 的额外指令（嵌入 Prompt）
-当你（AI）收到 PRD 和原型后，请按以下模板输出：
-
-markdown
-## 1. 分析报告
-- 用户故事列表
-- 测试用例清单（表格）
-
-## 2. 测试代码（先）
-- 单元测试（JUnit + Mockito）
-- 集成测试（@SpringBootTest + Testcontainers）
-
-## 3. 实现代码（后）
-- 最小功能实现
-- 重构版本（可选，注明改动）
-
-## 4. 验证结果
-- 测试通过截图 / 日志
-- 覆盖率统计
-约束：
-
-不允许在测试通过前编写任何业务实现。
-
-每次只生成一个迭代的内容，等待用户确认后继续下一步。
-
-若存在模糊需求（如缺少异常处理规则），主动请求明确。
+**执行步骤**：
+1. 根据已确认的技术Spec文档和测试规范，生成测试用例。
+2. 将生成的测试用例放入测试spec文档 (`.qoder/spec/test`) 目录下。
+
+**自检**：我会进行自我检查，确认测试用例是否符合测试规范。如果不符合，我会不断进行完善，直到完全符合规范。
+
+**【确认门】**：完成上述步骤后，我会向你展示成果，并询问："测试用例已生成并符合规范，是否确认并进入下一步（代码生成）？"。在你明确回复之前，我不能继续。
+
+### 阶段4：生成前后端代码
+
+**触发条件**：阶段3已得到你的确认。
+
+**执行步骤**：
+1. 严格根据已确认的技术Spec文档，生成全部的前后端代码。
+
+**【确认门】**：代码生成完毕后，我会通知你，并询问："前后端代码已生成，是否确认并进入下一步（测试执行与修复）？"。在你明确回复之前，我不能继续。
+
+### 阶段5：测试执行与Bug修复循环
+
+**触发条件**：阶段4已得到你的确认。
+
+**执行规则**：这是一个迭代循环，直到所有测试用例通过为止。
+
+1. **测试执行**：使用我在阶段3生成的测试用例，对你生成的代码进行测试。
+
+2. **Bug归档与修复**：
+   - 任何不符合功能需求的测试结果，我都会将其记录为Bug，并归档到测试bug文档 (`.qoder/rules/test`) 下。
+
+3. **修复策略**：
+   - 如果Bug只影响当前失败的测试用例，则可以先记录，等到第一轮所有测试用例执行完毕后，再统一修复所有这类Bug。
+   - 如果Bug影响了其他测试用例，则必须马上停止测试，立即修复此Bug。修复完成后，再继续执行剩余的测试用例。
+
+4. **循环**：第一轮所有测试用例执行完毕后，统一修复尚未处理的Bug。修复完成后，开启第二轮测试，并重复此循环。
+
+**结束条件**：直到某轮测试中，所有的测试用例都通过，则整个TDD流程测试完成。
+
+**【确认门】**：整个流程结束后，我会向你通报最终结果。
+
